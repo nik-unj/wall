@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Welcome home,\n${currentUser.displayName!}",
+                        "Welcome home,\n${currentUser.displayName ?? currentUser.email}",
                         style: CustomStyle.blackNeue(35),
                       ),
                       Text(

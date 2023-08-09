@@ -45,85 +45,91 @@ class _CommentPageState extends State<CommentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: CustomStyle.white2bg(),
-      body: Column(
+      body: Stack(
         children: [
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0),
+                child: Text(
+                  "Comments",
+                  style: CustomStyle.blackOswald(20),
+                ),
+              ),
+              const Divider(
+                thickness: 2,
+                color: Colors.black,
+              ),
+              Expanded(
+                child: StreamBuilder(
+                  stream: FirebaseFirestore.instance
+                      .collection(Strings.postCollection)
+                      .doc(widget.postId)
+                      .collection("Comments")
+                      .orderBy('CommentTime', descending: false)
+                      .snapshots(),
+                  builder: ((context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final comm = snapshot.data!.docs[index];
+                          return Comment(
+                            user: comm['CommentUser'],
+                            text: comm['CommentText'],
+                            time: toDate(comm['CommentTime']),
+                          );
+                        },
+                      );
+                    } else if (snapshot.hasError) {
+                      return Text('Error ${snapshot.error}');
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
+                ),
+              ),
+            ],
+          ),
           Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Text(
-              "Comments",
-              style: CustomStyle.blackOswald(20),
-            ),
-          ),
-          const Divider(
-            thickness: 2,
-            color: Colors.black,
-          ),
-          Expanded(
-            child: StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection(Strings.postCollection)
-                  .doc(widget.postId)
-                  .collection("Comments")
-                  .orderBy('CommentTime', descending: false)
-                  .snapshots(),
-              builder: ((context, snapshot) {
-                if (snapshot.hasData) {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (context, index) {
-                      final comm = snapshot.data!.docs[index];
-                      return Expanded(
-                          child: Comment(
-                        user: comm['CommentUser'],
-                        text: comm['CommentText'],
-                        time: toDate(comm['CommentTime']),
-                      ));
+            padding:
+                EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.60),
+            child: Container(
+              color: CustomStyle.white2bg(),
+              child: Row(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: CircleAvatar(
+                      radius: 20,
+                      backgroundColor: Colors.white,
+                      backgroundImage: AssetImage('assets/images/person.png'),
+                    ),
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: CustomTextField(
+                          controller: commentController,
+                          hint: "Comment as ${currentUser.email}",
+                          obscureText: false),
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      addComment(commentController.text);
+                      setState(() {
+                        commentController.clear();
+                      });
                     },
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error ${snapshot.error}');
-                }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            child: Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.white,
-                    backgroundImage: AssetImage('assets/images/person.png'),
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: CustomTextField(
-                        controller: commentController,
-                        hint: "Comment as ${currentUser.email}",
-                        obscureText: false),
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    addComment(commentController.text);
-                    setState(() {
-                      commentController.clear();
-                    });
-                    
-                  },
-                  icon: const Icon(
-                    Icons.send,
-                  ),
-                )
-              ],
+                    icon: const Icon(
+                      Icons.send,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ],

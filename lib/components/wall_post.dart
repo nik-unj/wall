@@ -60,12 +60,16 @@ class _WallPostState extends State<WallPost> {
   void showComments(BuildContext ctx) {
     showModalBottomSheet(
       elevation: 10,
+      isScrollControlled: true,
       context: ctx,
-      builder: (ctx) => CommentPage(
-        user: widget.user,
-        postId: widget.postId,
-        message: widget.message,
-        time: widget.time,
+      builder: (ctx) => SizedBox(
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: CommentPage(
+          user: widget.user,
+          postId: widget.postId,
+          message: widget.message,
+          time: widget.time,
+        ),
       ),
     );
   }

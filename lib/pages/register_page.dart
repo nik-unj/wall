@@ -35,18 +35,10 @@ class _RegisterPageState extends State<RegisterPage> {
       });
     } else {
       try {
-        //create a new user
-        final currentUser = FirebaseAuth.instance.currentUser!;
-        currentUser.updateDisplayName(emailController.text.split('@')[0]);
-
-        //create new doc for user info
-        // FirebaseFirestore.instance
-        //     .collection(Strings.userCollection)
-        //     .doc(userCredential.user!.email)
-        //     .set({
-        //   'Username': emailController.text.split('@')[0],
-        //   'Bio': 'I am new to wall'
-        // });
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
         Navigator.pop(context);
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
