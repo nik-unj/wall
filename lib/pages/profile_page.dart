@@ -83,11 +83,18 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Material(
                 elevation: 5,
                 borderRadius: BorderRadius.circular(50),
-                child: const CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.white,
-                  backgroundImage: AssetImage('assets/images/person.png'),
-                ),
+                child: currentUser.photoURL == null
+                    ? const CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                        backgroundImage: AssetImage('assets/images/person.png'),
+                      )
+                    : CircleAvatar(
+                        radius: 40,
+                        backgroundColor: Colors.white,
+                        backgroundImage:
+                            NetworkImage(currentUser.photoURL ?? ''),
+                      ),
               ),
             ),
             Padding(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wall/styles.dart';
 
 class CustomButton extends StatelessWidget {
   final Function()? onTap;
@@ -20,8 +21,11 @@ class CustomButton extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20), color: Colors.black),
         child: Center(
-            child: Text(name,
-                style: const TextStyle(color: Colors.white, fontSize: 15))),
+          child: Text(
+            name,
+            style: CustomStyle.blackNeue(30).copyWith(color: Colors.white),
+          ),
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wall/styles.dart';
 import '../strings.dart';
 import '../components/custom_button.dart';
 import '../components/custom_textField.dart';
@@ -43,61 +44,77 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      backgroundColor: CustomStyle.white2bg(),
+      resizeToAvoidBottomInset: false,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 25),
+        child: Material(
+          elevation: 15,
+          borderRadius: const BorderRadius.all(Radius.circular(25)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(Icons.lock, size: 100, color: Colors.grey),
+              Image.asset(
+                'assets/images/key.png',
+                height: 150,
+              ),
               const SizedBox(height: 20),
-              error.isNotEmpty ? Text(error) : Container(),
-              const SizedBox(height: 20),
-              const Text(
+              error.isNotEmpty
+                  ? Text(
+                      error,
+                      style: CustomStyle.blackOswald(15)
+                          .copyWith(color: Colors.red),
+                    )
+                  : Container(),
+              const SizedBox(height: 10),
+              Text(
                 "Good to see you again",
-                style: TextStyle(color: Colors.black, fontSize: 15),
+                style: CustomStyle.blackOswaldBold(25),
               ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: emailController,
-                hint: Strings.email,
-                obscureText: false,
+              const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CustomTextField(
+                  controller: emailController,
+                  hint: Strings.email,
+                  obscureText: false,
+                ),
               ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: passwordController,
-                hint: Strings.password,
-                obscureText: true,
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CustomTextField(
+                  controller: passwordController,
+                  hint: Strings.password,
+                  obscureText: true,
+                ),
               ),
-              const SizedBox(height: 20),
-              CustomButton(
-                name: Strings.signIn,
-                onTap: () {
-                  signIn();
-                },
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: CustomButton(
+                  name: Strings.signIn,
+                  onTap: () {
+                    signIn();
+                  },
+                ),
               ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    Strings.notAMember,
-                    style: TextStyle(color: Colors.black, fontSize: 15),
-                  ),
-                  GestureDetector(
-                    onTap: widget.onTap,
-                    child: const Text(
-                      Strings.registerHere,
-                      style: TextStyle(
-                        color: Colors.blue,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                      ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      Strings.notAMember,
+                      style: CustomStyle.blackOswald(15),
                     ),
-                  ),
-                ],
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: Text(Strings.registerHere,
+                          style: CustomStyle.blackOswaldBold(15)
+                              .copyWith(color: Colors.blueAccent)),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),

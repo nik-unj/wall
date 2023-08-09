@@ -17,7 +17,7 @@ class LandingPageState extends State<LandingPage> {
 
   List<IconData> listOfIcons = [
     Icons.home_rounded,
-    Icons.book_online_outlined,
+    Icons.pending_actions_outlined,
     Icons.person_rounded,
   ];
 
