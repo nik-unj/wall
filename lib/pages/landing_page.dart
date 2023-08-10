@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:wall/pages/home_page.dart';
 import 'package:wall/pages/mypost_page.dart';
 import 'package:wall/pages/profile_page.dart';
+import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
 
 class LandingPage extends StatefulWidget {
@@ -21,11 +22,7 @@ class LandingPageState extends State<LandingPage> {
     Icons.person_rounded,
   ];
 
-  List<String> listOfStrings = [
-    'Home',
-    'My Post',
-    'Profile',
-  ];
+  List<String> listOfStrings = [Strings.home, Strings.myPost, Strings.profile];
 
   List screens = [
     const HomePage(),
@@ -120,7 +117,7 @@ class LandingPageState extends State<LandingPage> {
                                   curve: Curves.fastLinearToSlowEaseIn,
                                   child: Text(
                                     index == currentIndex
-                                        ? '${listOfStrings[index]}'
+                                        ? listOfStrings[index]
                                         : '',
                                     style: const TextStyle(
                                       color: Colors.white,

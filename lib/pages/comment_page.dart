@@ -5,6 +5,7 @@ import 'package:wall/components/comment_tile.dart';
 import 'package:wall/components/custom_textField.dart';
 import 'package:wall/components/loading_widget.dart';
 import 'package:wall/helper/toTime.dart';
+import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
 
 class CommentPage extends StatefulWidget {
@@ -31,9 +32,9 @@ class _CommentPageState extends State<CommentPage> {
   void addComment(String text) {
     if (text.trim().isNotEmpty) {
       FirebaseFirestore.instance
-          .collection('User Posts')
+          .collection(Strings.postCollection)
           .doc(widget.postId)
-          .collection("Comments")
+          .collection(Strings.comments)
           .add({
         "CommentText": text,
         "CommentUser": currentUser.email,
@@ -53,7 +54,7 @@ class _CommentPageState extends State<CommentPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
                 child: Text(
-                  "Comments",
+                  Strings.comments,
                   style: CustomStyle.blackOswald(20),
                 ),
               ),
@@ -64,9 +65,9 @@ class _CommentPageState extends State<CommentPage> {
               Expanded(
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection('User Posts')
+                      .collection(Strings.postCollection)
                       .doc(widget.postId)
-                      .collection("Comments")
+                      .collection(Strings.comments)
                       .orderBy('CommentTime', descending: true)
                       .snapshots(),
                   builder: ((context, snapshot) {
@@ -74,7 +75,7 @@ class _CommentPageState extends State<CommentPage> {
                       if (snapshot.data!.docs.isEmpty) {
                         return Center(
                           child: Text(
-                            "No Comments yet",
+                            Strings.noComment,
                             style: CustomStyle.blackOswald(20),
                           ),
                         );

@@ -1,6 +1,6 @@
 class Strings {
   static const String postCollection = 'User Posts';
-  static const String userCollection = 'Users';
+  static const String comments = 'Comments';
   static const String email = 'Email';
   static const String password = 'Password';
   static const String cPassword = 'Confirm Password';
@@ -12,4 +12,20 @@ class Strings {
   static const String registerHere = 'Register Here';
   static const String samePassword = 'Incorrect Password';
   static const String enterMessage = 'Enter your message here';
+  static const String createPost = 'Create Post';
+  static const String writemsg = "Write Message ...";
+  static const String post = 'Post';
+  static const String noComment = "No Comments yet";
+  static const String start = "Let's Start→";
+  static const String home = "Home";
+  static const String myPost = "My Posts";
+  static const String profile = "Profile";
+  static const String seeAgain = "Good to see you again";
+  static const String save = "Save";
+  static const String cancel = "Cancel";
+  static const String name = "Name";
+  static const String url = "Image-url";
+  static const String logout = "Logout";
+  static const String wall = "THE WALL";
+  static const String getStarted = "New here , lets get started";
 }

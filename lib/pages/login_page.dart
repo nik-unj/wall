@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wall/components/custom_button.dart';
+import 'package:wall/components/custom_textField.dart';
 import 'package:wall/components/loading_widget.dart';
+import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
-import '../strings/strings.dart';
-import '../components/custom_button.dart';
-import '../components/custom_textField.dart';
+
 
 class LoginPage extends StatefulWidget {
   final Function() onTap;
@@ -68,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                   : Container(),
               const SizedBox(height: 10),
               Text(
-                "Good to see you again",
+                Strings.seeAgain,
                 style: CustomStyle.blackOswaldBold(25),
               ),
               const SizedBox(height: 30),

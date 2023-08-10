@@ -36,7 +36,7 @@ class _MyPostPageState extends State<MyPostPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "My Posts",
+                        Strings.myPost,
                         style: CustomStyle.blackOswald(25),
                       ),
                     ],

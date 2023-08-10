@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -28,11 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: (() => Navigator.pop(context)),
-            child: const Text('Cancel'),
+            child: const Text(Strings.cancel),
           ),
           TextButton(
             onPressed: (() => Navigator.of(context).pop(newValue)),
-            child: const Text('Save'),
+            child: const Text(Strings.save),
           ),
         ],
       ),
@@ -70,7 +71,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Profile",
+                        Strings.profile,
                         style: CustomStyle.blackOswald(25),
                       ),
                     ],
@@ -109,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "E-mail: ${currentUser.email}",
+                        "${Strings.email}: ${currentUser.email}",
                         style: CustomStyle.blackOswald(20),
                       ),
                     ],
@@ -129,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Name: ${currentUser.displayName ?? '-'}",
+                        "${Strings.name}: ${currentUser.displayName ?? '-'}",
                         style: CustomStyle.blackOswald(20),
                       ),
                       InkWell(
@@ -155,7 +156,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.7,
                         child: Text(
-                          "Image-url: ${currentUser.photoURL ?? '-'}",
+                          "${Strings.url}: ${currentUser.photoURL ?? '-'}",
                           style: CustomStyle.blackOswald(20),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -181,7 +182,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Logout",
+                        Strings.logout,
                         style: CustomStyle.blackOswald(20),
                       ),
                       InkWell(

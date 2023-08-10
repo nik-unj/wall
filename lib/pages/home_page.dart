@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                         style: CustomStyle.blackNeue(35),
                       ),
                       Text(
-                        "Let's Start→",
+                        Strings.start,
                         style: CustomStyle.blackOswald(15)
                             .copyWith(color: Colors.grey),
                       ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wall/components/like_button.dart';
 import 'package:wall/pages/comment_page.dart';
+import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
 
 class PostTile extends StatefulWidget {
@@ -36,7 +37,7 @@ class _PostTileState extends State<PostTile> {
 
     //access the doc in firebase
     DocumentReference postRef = FirebaseFirestore.instance
-        .collection('User Posts')
+        .collection(Strings.postCollection)
         .doc(widget.postId);
 
     if (isLiked) {

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wall/auth/auth.dart';
+import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
 
 class SplashPage extends StatefulWidget {
@@ -42,7 +43,7 @@ class _SplashPageState extends State<SplashPage> {
                 borderRadius: BorderRadius.all(Radius.circular(100)),
                 color: Colors.white54),
             child: Text(
-              "THE WALL",
+              Strings.wall,
               textAlign: TextAlign.center,
               style: CustomStyle.blackConcertBold(50).copyWith(height: 1),
             ),

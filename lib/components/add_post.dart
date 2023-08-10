@@ -17,7 +17,7 @@ class _AddPostState extends State<AddPost> {
 
   void postMessage() {
     if (messageController.text.isNotEmpty) {
-      FirebaseFirestore.instance.collection(Strings.userCollection).add({
+      FirebaseFirestore.instance.collection(Strings.postCollection).add({
         'UserEmail': currentUser.email,
         'Message': messageController.text,
         'TimeStamp': Timestamp.now(),
@@ -41,7 +41,7 @@ class _AddPostState extends State<AddPost> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 30),
                 child: Text(
-                  "Create Post",
+                  Strings.createPost,
                   style: CustomStyle.blackConcertBold(25),
                 ),
               ),
@@ -56,7 +56,7 @@ class _AddPostState extends State<AddPost> {
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
-                  hintText: "Write Message ...",
+                  hintText: Strings.writemsg,
                 ),
               ),
               Padding(
@@ -74,7 +74,7 @@ class _AddPostState extends State<AddPost> {
                       child: Padding(
                         padding: const EdgeInsets.all(15.0),
                         child: Text(
-                          "Post",
+                          Strings.post,
                           style: CustomStyle.blackOswaldBold(18),
                         ),
                       )),
