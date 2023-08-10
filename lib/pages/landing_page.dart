@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:wall/pages/home_page.dart';
 import 'package:wall/pages/mypost_page.dart';
 import 'package:wall/pages/profile_page.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/style/styles.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});

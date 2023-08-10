@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wall/components/comment.dart';
+import 'package:wall/components/comment_tile.dart';
 import 'package:wall/components/custom_textField.dart';
+import 'package:wall/components/loading_widget.dart';
 import 'package:wall/helper/toTime.dart';
-import 'package:wall/strings.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/style/styles.dart';
 
 class CommentPage extends StatefulWidget {
   final String message;
   final String user;
   final String postId;
   final String time;
+
   const CommentPage(
       {super.key,
       required this.message,
@@ -30,7 +31,7 @@ class _CommentPageState extends State<CommentPage> {
   void addComment(String text) {
     if (text.trim().isNotEmpty) {
       FirebaseFirestore.instance
-          .collection(Strings.postCollection)
+          .collection('User Posts')
           .doc(widget.postId)
           .collection("Comments")
           .add({
@@ -63,31 +64,38 @@ class _CommentPageState extends State<CommentPage> {
               Expanded(
                 child: StreamBuilder(
                   stream: FirebaseFirestore.instance
-                      .collection(Strings.postCollection)
+                      .collection('User Posts')
                       .doc(widget.postId)
                       .collection("Comments")
-                      .orderBy('CommentTime', descending: false)
+                      .orderBy('CommentTime', descending: true)
                       .snapshots(),
                   builder: ((context, snapshot) {
                     if (snapshot.hasData) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (context, index) {
-                          final comm = snapshot.data!.docs[index];
-                          return Comment(
-                            user: comm['CommentUser'],
-                            text: comm['CommentText'],
-                            time: toDate(comm['CommentTime']),
-                          );
-                        },
-                      );
+                      if (snapshot.data!.docs.isEmpty) {
+                        return Center(
+                          child: Text(
+                            "No Comments yet",
+                            style: CustomStyle.blackOswald(20),
+                          ),
+                        );
+                      } else {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            final commentList = snapshot.data!.docs[index];
+                            return CommentTile(
+                              user: commentList['CommentUser'],
+                              text: commentList['CommentText'],
+                              time: toTime(commentList['CommentTime']),
+                            );
+                          },
+                        );
+                      }
                     } else if (snapshot.hasError) {
                       return Text('Error ${snapshot.error}');
                     }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                    return const Loading();
                   }),
                 ),
               ),

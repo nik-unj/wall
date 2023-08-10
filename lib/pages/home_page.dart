@@ -2,10 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wall/components/add_post.dart';
-import 'package:wall/components/wall_post.dart';
-import 'package:wall/helper/toTime.dart';
-import 'package:wall/strings.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/components/loading_widget.dart';
+import 'package:wall/components/post_tile.dart';
+import 'package:wall/helper/toDate.dart';
+import 'package:wall/strings/strings.dart';
+import 'package:wall/style/styles.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (context, index) {
                         final post = snapshot.data!.docs[index];
-                        return WallPost(
+                        return PostTile(
                           message: post['Message'],
                           user: post['UserEmail'],
                           postId: post.id,
@@ -126,97 +127,12 @@ class _HomePageState extends State<HomePage> {
                 } else if (snapshot.hasError) {
                   return Text('Error ${snapshot.error}');
                 }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Loading();
               },
             ),
           ],
         ),
       ),
     );
-
-    //   return Scaffold(
-    //     appBar: AppBar(
-    //       elevation: 1.0,
-    //       backgroundColor: Colors.white,
-    //       iconTheme: const IconThemeData(color: Colors.black),
-    //       title: const Text(""),
-    //     ),
-    //     drawer: MyDrawer(
-    //       onProfileTap: () {
-    //         Navigator.pushReplacement(context,
-    //             MaterialPageRoute(builder: ((context) => const ProfilePage())));
-    //       },
-    //       onLogoutTap: signOut,
-    //     ),
-    //     body: Container(
-    //       decoration: const BoxDecoration(
-    //           image: DecorationImage(
-    //               fit: BoxFit.fill, image: AssetImage('assets/images/wall.jpg'))),
-    //       child: Center(
-    //         child: Padding(
-    //           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-    //           child: Column(
-    //             children: [
-    //               Padding(
-    //                 padding: const EdgeInsets.symmetric(vertical: 15.0),
-    //                 child: Row(
-    //                   children: [
-    //                     Expanded(
-    //                       child: CustomTextField(
-    //                         controller: messageController,
-    //                         hint: Strings.enterMessage,
-    //                         obscureText: false,
-    //                       ),
-    //                     ),
-    //                     IconButton(
-    //                       onPressed: postMessage,
-    //                       icon: const Icon(
-    //                         Icons.send,
-    //                       ),
-    //                     )
-    //                   ],
-    //                 ),
-    //               ),
-    //               Expanded(
-    //                 child: StreamBuilder(
-    //                   stream: FirebaseFirestore.instance
-    //                       .collection(Strings.postCollection)
-    //                       .orderBy(
-    //                         'TimeStamp',
-    //                         descending: true,
-    //                       )
-    //                       .snapshots(),
-    //                   builder: (context, snapshot) {
-    //                     if (snapshot.hasData) {
-    //                       return ListView.builder(
-    //                         itemCount: snapshot.data!.docs.length,
-    //                         itemBuilder: (context, index) {
-    //                           final post = snapshot.data!.docs[index];
-    //                           return WallPost(
-    //                             message: post['Message'],
-    //                             user: post['UserEmail'],
-    //                             postId: post.id,
-    //                             time: toDate(post['TimeStamp']),
-    //                             likes: List<String>.from(post['Likes']),
-    //                           );
-    //                         },
-    //                       );
-    //                     } else if (snapshot.hasError) {
-    //                       return Text('Error ${snapshot.error}');
-    //                     }
-    //                     return const Center(
-    //                       child: CircularProgressIndicator(),
-    //                     );
-    //                   },
-    //                 ),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //       ),
-    //     ),
-    //   );
   }
 }

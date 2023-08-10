@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wall/components/wall_post.dart';
-import 'package:wall/helper/toTime.dart';
-import 'package:wall/strings.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/components/loading_widget.dart';
+import 'package:wall/components/post_tile.dart';
+import 'package:wall/helper/toDate.dart';
+import 'package:wall/strings/strings.dart';
+import 'package:wall/style/styles.dart';
 
 class MyPostPage extends StatefulWidget {
   const MyPostPage({super.key});
@@ -62,7 +63,7 @@ class _MyPostPageState extends State<MyPostPage> {
                       itemBuilder: (context, index) {
                         final post = snapshot.data!.docs[index];
                         if (currentUser.email == post['UserEmail']) {
-                          return WallPost(
+                          return PostTile(
                             message: post['Message'],
                             user: post['UserEmail'],
                             postId: post.id,
@@ -78,9 +79,7 @@ class _MyPostPageState extends State<MyPostPage> {
                 } else if (snapshot.hasError) {
                   return Text('Error ${snapshot.error}');
                 }
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Loading();
               },
             ),
           ],

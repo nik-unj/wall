@@ -1,8 +1,7 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:wall/auth/auth.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/style/styles.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});

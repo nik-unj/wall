@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/style/styles.dart';
 
 class CustomButton extends StatelessWidget {
   final Function()? onTap;

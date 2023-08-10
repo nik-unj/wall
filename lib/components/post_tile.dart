@@ -3,16 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wall/components/like_button.dart';
 import 'package:wall/pages/comment_page.dart';
-import 'package:wall/strings.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/style/styles.dart';
 
-class WallPost extends StatefulWidget {
+class PostTile extends StatefulWidget {
   final String message;
   final String user;
   final String postId;
   final String time;
   final List<String> likes;
-  const WallPost(
+  const PostTile(
       {super.key,
       required this.message,
       required this.user,
@@ -21,10 +20,10 @@ class WallPost extends StatefulWidget {
       required this.time});
 
   @override
-  State<WallPost> createState() => _WallPostState();
+  State<PostTile> createState() => _PostTileState();
 }
 
-class _WallPostState extends State<WallPost> {
+class _PostTileState extends State<PostTile> {
   TextEditingController commentController = TextEditingController();
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLiked = false;
@@ -37,7 +36,7 @@ class _WallPostState extends State<WallPost> {
 
     //access the doc in firebase
     DocumentReference postRef = FirebaseFirestore.instance
-        .collection(Strings.postCollection)
+        .collection('User Posts')
         .doc(widget.postId);
 
     if (isLiked) {

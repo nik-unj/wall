@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wall/styles.dart';
-import '../strings.dart';
+import 'package:wall/components/loading_widget.dart';
+import 'package:wall/style/styles.dart';
+import '../strings/strings.dart';
 import '../components/custom_button.dart';
 import '../components/custom_textField.dart';
 
@@ -23,16 +24,14 @@ class _LoginPageState extends State<LoginPage> {
     setState(() {
       error = '';
     });
-    showDialog(
-      context: context,
-      builder: (context) => const Center(child: CircularProgressIndicator()),
-    );
+    showDialog(context: context, builder: (context) => const Loading());
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      Navigator.pop(context);
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+            email: emailController.text,
+            password: passwordController.text,
+          )
+          .then((value) => Navigator.pop(context));
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       setState(() {

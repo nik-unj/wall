@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/style/styles.dart';
 import '../components/custom_button.dart';
 import '../components/custom_textField.dart';
-import '../strings.dart';
+import '../strings/strings.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function() onTap;
@@ -35,11 +35,12 @@ class _RegisterPageState extends State<RegisterPage> {
       });
     } else {
       try {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
-          password: passwordController.text,
-        );
-        Navigator.pop(context);
+        await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: emailController.text,
+              password: passwordController.text,
+            )
+            .then((value) => Navigator.pop(context));
       } on FirebaseAuthException catch (e) {
         Navigator.pop(context);
         setState(() {

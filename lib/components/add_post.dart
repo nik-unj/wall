@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:wall/strings.dart';
-import 'package:wall/styles.dart';
+import 'package:wall/strings/strings.dart';
+import 'package:wall/style/styles.dart';
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -17,7 +17,7 @@ class _AddPostState extends State<AddPost> {
 
   void postMessage() {
     if (messageController.text.isNotEmpty) {
-      FirebaseFirestore.instance.collection(Strings.postCollection).add({
+      FirebaseFirestore.instance.collection(Strings.userCollection).add({
         'UserEmail': currentUser.email,
         'Message': messageController.text,
         'TimeStamp': Timestamp.now(),
