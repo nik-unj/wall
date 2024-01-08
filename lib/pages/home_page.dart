@@ -5,6 +5,7 @@ import 'package:wall/components/add_post.dart';
 import 'package:wall/components/loading_widget.dart';
 import 'package:wall/components/post_tile.dart';
 import 'package:wall/helper/toDate.dart';
+import 'package:wall/model/postmodel.dart';
 import 'package:wall/strings/strings.dart';
 import 'package:wall/style/styles.dart';
 
@@ -42,7 +43,7 @@ class _HomePageState extends State<HomePage> {
       elevation: 10,
       isScrollControlled: true,
       context: ctx,
-      builder: (ctx) => const SizedBox(height: 350, child: AddPost()),
+      builder: (ctx) => const AddPost(),
     );
   }
 
@@ -62,75 +63,80 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(15.0),
             child: Icon(
               Icons.add,
+              color: Colors.white,
               size: 30,
             ),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Material(
-              elevation: 5,
-              child: Container(
-                height: 200,
-                width: double.maxFinite,
-                color: CustomStyle.whitebg(),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 10, top: 80),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Welcome home,\n${currentUser.displayName ?? currentUser.email}",
-                        style: CustomStyle.blackNeue(35),
-                      ),
-                      Text(
-                        Strings.start,
-                        style: CustomStyle.blackOswald(15)
-                            .copyWith(color: Colors.grey),
-                      ),
-                    ],
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Material(
+                elevation: 5,
+                child: Container(
+                  width: double.maxFinite,
+                  color: CustomStyle.whitebg(),
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, bottom: 10, top: 10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Welcome home,\n${currentUser.displayName ?? currentUser.email}",
+                          style: CustomStyle.blackNeue(35),
+                        ),
+                        Text(
+                          Strings.start,
+                          style: CustomStyle.blackOswald(15)
+                              .copyWith(color: Colors.grey),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            StreamBuilder(
-              stream: FirebaseFirestore.instance
-                  .collection(Strings.postCollection)
-                  .orderBy(
-                    'TimeStamp',
-                    descending: true,
-                  )
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Padding(
-                    padding: const EdgeInsets.only(top: 0, bottom: 70),
-                    child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (context, index) {
-                        final post = snapshot.data!.docs[index];
-                        return PostTile(
-                          message: post['Message'],
-                          user: post['UserEmail'],
-                          postId: post.id,
-                          time: toDate(post['TimeStamp']),
-                          likes: List<String>.from(post['Likes']),
-                        );
-                      },
-                    ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error ${snapshot.error}');
-                }
-                return const Loading();
-              },
-            ),
-          ],
+              StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection(Strings.postCollection)
+                    .orderBy(
+                      'TimeStamp',
+                      descending: true,
+                    )
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 20, bottom: 70),
+                      child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          final post =
+                              Post.fromMap(snapshot.data!.docs[index].data());
+                          return PostTile(
+                            message: post.Message,
+                            user: post.UserEmail,
+                            postId: snapshot.data!.docs[index].id,
+                            time: toDate(post.TimeStamp),
+                            likes: post.Likes ?? [],
+                            path: post.Path ?? '',
+                          );
+                        },
+                      ),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Error ${snapshot.error}');
+                  }
+                  return const Loading();
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

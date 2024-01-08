@@ -69,6 +69,7 @@ class _MyPostPageState extends State<MyPostPage> {
                             postId: post.id,
                             time: toDate(post['TimeStamp']),
                             likes: List<String>.from(post['Likes']),
+                            path: '',
                           );
                         } else {
                           return Container();

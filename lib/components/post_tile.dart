@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:wall/components/like_button.dart';
 import 'package:wall/pages/comment_page.dart';
@@ -11,14 +14,16 @@ class PostTile extends StatefulWidget {
   final String user;
   final String postId;
   final String time;
-  final List<String> likes;
+  final List likes;
+  final String path;
   const PostTile(
       {super.key,
       required this.message,
       required this.user,
       required this.postId,
       required this.likes,
-      required this.time});
+      required this.time,
+      required this.path});
 
   @override
   State<PostTile> createState() => _PostTileState();
@@ -29,6 +34,7 @@ class _PostTileState extends State<PostTile> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   bool isLiked = false;
   int comments = 0;
+  String url = '';
 
   void toggleLike() {
     setState(() {
@@ -53,8 +59,23 @@ class _PostTileState extends State<PostTile> {
 
   @override
   void initState() {
+    downloadURL();
     super.initState();
     isLiked = widget.likes.contains(currentUser.email);
+  }
+
+  Future<String> downloadURL() async {
+    try {
+      final ref = FirebaseStorage.instance.ref().child(widget.path);
+      String uri = await ref.getDownloadURL();
+      setState(() {
+        url = uri;
+      });
+      return uri;
+    } catch (e) {
+      print("Check ${e}");
+    }
+    return '';
   }
 
   void showComments(BuildContext ctx) {
@@ -98,7 +119,6 @@ class _PostTileState extends State<PostTile> {
                     width: 10,
                   ),
                   SizedBox(
-                    height: 40,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       mainAxisSize: MainAxisSize.max,
@@ -119,11 +139,47 @@ class _PostTileState extends State<PostTile> {
                 ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 10, top: 15, bottom: 15),
-                child: Text(widget.message,
-                    style: CustomStyle.blackOswald(16)
-                        .copyWith(color: Colors.grey)),
+                padding: const EdgeInsets.only(left: 10, top: 15),
+                child: Text(
+                  widget.message,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style:
+                      CustomStyle.blackOswald(16).copyWith(color: Colors.grey),
+                ),
               ),
+              if (widget.path != '')
+                FutureBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: ClipRRect(
+                            borderRadius:
+                                BorderRadius.circular(20), // Image border
+                            child: SizedBox.fromSize(
+                              size: const Size.fromRadius(120), // Image radius
+                              child: Image.network(
+                                url,
+                                fit: BoxFit.cover,
+                                filterQuality: FilterQuality.low,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                    return Center(
+                      child: Image.asset(
+                        'assets/images/load.gif',
+                        fit: BoxFit.cover,
+                        height: 150,
+                      ),
+                    );
+                  },
+                  future: downloadURL(),
+                ),
               const Divider(
                 thickness: 1,
                 color: Colors.black,
